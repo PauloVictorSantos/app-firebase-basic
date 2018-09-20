@@ -24,7 +24,7 @@ class App extends Component {
     return (
       <View>
         <Text>Meu App</Text>
-        <Button onPress={} title="Salvar Dados"
+        <Button onPress={() => { this.salvarDados(); }} title="Salvar Dados"
           color="#841584"
           accessibilityLabel="Salvar dados"
         />
