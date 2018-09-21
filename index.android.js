@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Text, Button } from 'react-native';
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 
 class App extends Component {
   componentWillMount() {
@@ -16,8 +16,15 @@ class App extends Component {
   }
 
   salvarDados() {
-    var database = firebase.database();
-    database.ref("pontuacao").set("100");
+    var funcionario = firebase.database().ref("funcionarios");
+    funcionario.push().set(
+      {
+        nome: "Jamilton Damasceno",
+        altura: "1,75",
+        peso: "70KG"
+      }
+    );
+    
   }
 
   render() {
