@@ -3,6 +3,13 @@ import { AppRegistry, View, Text, Button } from 'react-native';
 import * as firebase from 'firebase';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pontuacao: 0
+    }
+  }
+
   componentWillMount() {
     var config = {
       apiKey: "AIzaSyA2HdUPNlvyTZk6FTv3_0EbHrPZtr751jo",
@@ -16,25 +23,34 @@ class App extends Component {
   }
 
   salvarDados() {
-    var funcionario = firebase.database().ref("funcionarios");
-    funcionario.push().set(
-      {
-        nome: "Jamilton Damasceno",
-        altura: "1,75",
-        peso: "70KG"
-      }
-    );
     
+  
+  }
+
+  listarDados() {
+    var pontuacao = firebase.database().ref("pontuacao");
+    pontuacao.on('value', (snapshot) => {
+      var pontos = snapshot.val();
+      this.setState({ pontuacao: pontos });
+    });
+
   }
 
   render() {
+    let { pontuacao } = this.state;
     return (
+
       <View>
         <Text>Meu App</Text>
         <Button onPress={() => { this.salvarDados(); }} title="Salvar Dados"
           color="#841584"
           accessibilityLabel="Salvar dados"
         />
+        <Button onPress={() => { this.listarDados(); }} title="Salvar Dados"
+          color="#841584"
+          accessibilityLabel="Listar dados"
+        />
+        <Text>{pontuacao}</Text>
       </View>
     );
   }
