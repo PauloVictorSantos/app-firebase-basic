@@ -27,10 +27,51 @@ class App extends Component {
       var mensagem = "";
       if (error.code == "auth/weak-password") {
         mensagem = "A senha precisa ter no mínimo 6 caracteres";
+        Alert.alert("Aviso:", mensagem);
       }
-      Alert.alert("Aviso:", mensagem)
+
     }
+    )
+  }
+
+  logOutUsuario(){
+    const usuario =firebase.auth();
+    usuario.signOut();
+  }
+
+  verificarUsuarioLogado() {
+    const usuario = firebase.auth();
+    /* const usuarioAtual = usuario.currentUser;
+     if(usuarioAtual){
+       Alert.alert("Aviso:","Usuario Logado!");
+     }else{
+       Alert.alert("Aviso:","Usuario não está Logado!");
+     }
+     */
+
+    usuario.onAuthStateChanged(
+      (usuarioAtual) => {
+        if (usuarioAtual) {
+          Alert.alert("Aviso:", "Usuario Logado!");
+        } else {
+          Alert.alert("Aviso:", "Usuario não está Logado!");
+        }
+      }
     );
+  }
+
+  logarUsuario(){
+    const usuario = firebase.auth();
+    var email = "paulovictor494@gmail.com";
+    var senha = "paulovictor";
+
+    usuario.signInWithEmailAndPassword(email, senha)
+      .catch((error) => {
+        alert(error.mensagem);
+      }
+    );
+
+
   }
 
   render() {
@@ -40,6 +81,22 @@ class App extends Component {
         <Button onPress={() => { this.cadastrarUsuario(); }} title="Salvar Dados"
           color="#841584"
           accessibilityLabel="Salvar dados"
+        />
+
+        <Button onPress={() => { this.verificarUsuarioLogado(); }} title="Verifica Usuario"
+          color="#841584"
+          accessibilityLabel="Verifica Usuario"
+        />
+
+         <Button onPress={() => { this.logOutUsuario(); }} title="Sigh Out"
+          color="#841584"
+          accessibilityLabel="Sair Usuario"
+        />
+
+        <Button onPress={() => { this.logarUsuario(); }}
+         title="LogIn"
+          color="#841584"
+          accessibilityLabel="Logar"
         />
       </View>
     );
