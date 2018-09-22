@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, Button } from 'react-native';
+import { AppRegistry, View, Text, Button, Alert } from 'react-native';
 import * as firebase from 'firebase';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pontuacao: 0
-    }
-  }
 
   componentWillMount() {
     var config = {
@@ -22,35 +16,31 @@ class App extends Component {
     firebase.initializeApp(config);
   }
 
-  salvarDados() {
-    
-  
-  }
+  cadastrarUsuario() {
+    var email = "paulovictor494@gmail.com";
+    var senha = "paulovictor";
 
-  listarDados() {
-    var pontuacao = firebase.database().ref("pontuacao");
-    pontuacao.on('value', (snapshot) => {
-      var pontos = snapshot.val();
-      this.setState({ pontuacao: pontos });
-    });
-
+    const usuario = firebase.auth();
+    usuario.createUserWithEmailAndPassword(
+      email, senha
+    ).catch((error) => {
+      var mensagem = "";
+      if (error.code == "auth/weak-password") {
+        mensagem = "A senha precisa ter no mínimo 6 caracteres";
+      }
+      Alert.alert("Aviso:", mensagem)
+    }
+    );
   }
 
   render() {
-    let { pontuacao } = this.state;
     return (
-
       <View>
         <Text>Meu App</Text>
-        <Button onPress={() => { this.salvarDados(); }} title="Salvar Dados"
+        <Button onPress={() => { this.cadastrarUsuario(); }} title="Salvar Dados"
           color="#841584"
           accessibilityLabel="Salvar dados"
         />
-        <Button onPress={() => { this.listarDados(); }} title="Salvar Dados"
-          color="#841584"
-          accessibilityLabel="Listar dados"
-        />
-        <Text>{pontuacao}</Text>
       </View>
     );
   }
